@@ -47,11 +47,10 @@ public class SimpleGraph<V> implements Graph<V> {
     public List<Edge<V>> getPath(V vertexA, V vertexB) {
         List<Edge<V>> result = new ArrayList<>();
 
-        Set<V> visited = new LinkedHashSet<>();
-        List<V> path = new LinkedList<>();
+        Stack<V> path = new Stack<>();
         path.add(vertexA);
 
-        doFindPath(vertexA, vertexB, visited, path, result);
+        doFindPath(vertexA, vertexB, path, result);
 
         log.debug("Result: {}", result);
         return result;
@@ -63,13 +62,11 @@ public class SimpleGraph<V> implements Graph<V> {
     }
 
     @Override
-    public List<V> getAdjacent(V vertex) {
+    public List<V> getAdjacentNodes(V vertex) {
         return data.get(vertex);
     }
 
-    private void doFindPath(V vertexA, V vertexB, Set<V> visited, List<V> path, List<Edge<V>> edges) {
-        visited.add(vertexA);
-
+    private void doFindPath(V vertexA, V vertexB, Stack<V> path, List<Edge<V>> edges) {
         if (vertexA.equals(vertexB)) {
             log.debug("Path: {}", path);
             if (path.size() > 1) {
@@ -82,18 +79,15 @@ public class SimpleGraph<V> implements Graph<V> {
         }
 
         for (V current: data.get(vertexA)) {
-            if (!visited.contains(current)) {
+            if (edges.isEmpty() && !path.contains(current)) {
                 log.debug("Next node: {}", current);
-                path.add(current);
+                path.push(current);
 
-                doFindPath(current, vertexB, visited, path, edges);
+                doFindPath(current, vertexB, path, edges);
 
                 log.debug("Remove {} from path", current);
-                path.remove(current);
+                path.pop();
             }
         }
-
-        log.debug("Remove {} from visited", vertexA);
-        visited.remove(vertexA);
     }
 }

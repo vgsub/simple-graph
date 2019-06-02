@@ -1,10 +1,10 @@
 package org.vsubbotin.natera.graph;
 
 import lombok.AllArgsConstructor;
-import lombok.ToString;
+import lombok.Data;
 
+@Data
 @AllArgsConstructor
-@ToString
 public class Edge<V> {
     private V vertexA;
     private V vertexB;

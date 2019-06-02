@@ -5,6 +5,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.vsubbotin.natera.graph.impl.GraphBuilder;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 public class Tests {
     @Test
@@ -18,7 +21,7 @@ public class Tests {
 
         log.debug("Graph: {}", graph);
 
-        Assert.assertEquals("[Alice, Den, Charlie]", graph.getAdjacent("Bob").toString());
+        Assert.assertEquals("[Alice, Den, Charlie]", graph.getAdjacentNodes("Bob").toString());
     }
 
     @Test
@@ -32,7 +35,7 @@ public class Tests {
 
         log.debug("Graph: {}", graph);
 
-        Assert.assertEquals("[Den, Charlie]", graph.getAdjacent("Bob").toString());
+        Assert.assertEquals("[Den, Charlie]", graph.getAdjacentNodes("Bob").toString());
     }
 
     @Test
@@ -46,21 +49,26 @@ public class Tests {
 
         log.debug("Graph: {}", graph);
 
-        graph.getPath("Alice", "Eagle");
+        List<Edge<String>> edges = graph.getPath("Alice", "Eagle");
+
+        Assert.assertEquals("Bob,Den,Eagle", edges.stream().map(Edge::getVertexB).collect(Collectors.joining(",")));
     }
 
     @Test
     public void testDirectedGraphGetPath() {
         Graph<String> graph = GraphBuilder.<String>create().directed().build();
         graph.addVertex("Alice");
-        graph.addEdge("Bob", "Alice");
         graph.addEdge("Den", "Bob");
         graph.addEdge("Bob", "Charlie");
+        graph.addEdge("Bob", "Alice");
         graph.addEdge("Eagle", "Den");
         graph.addEdge("Alice", "Eagle");
+        graph.addEdge("Charlie", "Den");
 
         log.debug("Graph: {}", graph);
 
-        graph.getPath("Den", "Eagle");
+        List<Edge<String>> edges = graph.getPath("Den", "Eagle");
+
+        Assert.assertEquals("Bob,Alice,Eagle", edges.stream().map(Edge::getVertexB).collect(Collectors.joining(",")));
     }
 }

@@ -11,5 +11,5 @@ public interface Graph<V> {
 
     boolean isDirected();
 
-    List<V> getAdjacent(V vertex);
+    List<V> getAdjacentNodes(V vertex);
 }
