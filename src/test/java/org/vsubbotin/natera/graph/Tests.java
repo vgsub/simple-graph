@@ -62,6 +62,7 @@ public class Tests {
         graph.addEdge("Bob", "Charlie");
         graph.addEdge("Bob", "Alice");
         graph.addEdge("Eagle", "Den");
+        graph.addEdge("Alice", "Charlie");
         graph.addEdge("Alice", "Eagle");
         graph.addEdge("Charlie", "Den");
 

@@ -47,10 +47,11 @@ public class SimpleGraph<V> implements Graph<V> {
     public List<Edge<V>> getPath(V vertexA, V vertexB) {
         List<Edge<V>> result = new ArrayList<>();
 
+        Stack<V> visited = new Stack<>();
         Stack<V> path = new Stack<>();
         path.add(vertexA);
 
-        doFindPath(vertexA, vertexB, path, result);
+        doFindPath(vertexA, vertexB, path, visited, result);
 
         log.debug("Result: {}", result);
         return result;
@@ -66,7 +67,9 @@ public class SimpleGraph<V> implements Graph<V> {
         return data.get(vertex);
     }
 
-    private void doFindPath(V vertexA, V vertexB, Stack<V> path, List<Edge<V>> edges) {
+    private void doFindPath(V vertexA, V vertexB, Stack<V> path, Stack<V> visited, List<Edge<V>> edges) {
+        visited.push(vertexA);
+
         if (vertexA.equals(vertexB)) {
             log.debug("Path: {}", path);
             if (path.size() > 1) {
@@ -79,11 +82,11 @@ public class SimpleGraph<V> implements Graph<V> {
         }
 
         for (V current: data.get(vertexA)) {
-            if (edges.isEmpty() && !path.contains(current)) {
+            if (edges.isEmpty() && !visited.contains(current)) {
                 log.debug("Next node: {}", current);
                 path.push(current);
 
-                doFindPath(current, vertexB, path, edges);
+                doFindPath(current, vertexB, path, visited, edges);
 
                 log.debug("Remove {} from path", current);
                 path.pop();
