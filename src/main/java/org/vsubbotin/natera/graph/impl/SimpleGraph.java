@@ -47,7 +47,7 @@ public class SimpleGraph<V> implements Graph<V> {
     public List<Edge<V>> getPath(V vertexA, V vertexB) {
         List<Edge<V>> result = new ArrayList<>();
 
-        Stack<V> visited = new Stack<>();
+        Set<V> visited = new LinkedHashSet<>();
         Stack<V> path = new Stack<>();
         path.add(vertexA);
 
@@ -67,8 +67,8 @@ public class SimpleGraph<V> implements Graph<V> {
         return data.get(vertex);
     }
 
-    private void doFindPath(V vertexA, V vertexB, Stack<V> path, Stack<V> visited, List<Edge<V>> edges) {
-        visited.push(vertexA);
+    private void doFindPath(V vertexA, V vertexB, Stack<V> path, Set<V> visited, List<Edge<V>> edges) {
+        visited.add(vertexA);
 
         if (vertexA.equals(vertexB)) {
             log.debug("Path: {}", path);
